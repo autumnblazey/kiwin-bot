@@ -1,0 +1,14 @@
+{
+   "name": "kiwin-bot",
+   "version": "0.1.0",
+   "author": "Alexander Liu (autumnblazey)",
+   "license": "AGPL-3.0-only",
+   "main": "build/index.js",
+   "scripts": {},
+   "dependencies": {
+      "discord.js": "^12.5.1"
+   },
+   "devDependencies": {
+      "typescript": "^4.2.3"
+   }
+}
