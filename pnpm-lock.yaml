@@ -1,7 +1,9 @@
 dependencies:
-  discord.js: 12.5.1
-devDependencies:
   '@types/node': 14.14.33
+  '@types/ws': 7.4.0
+  discord.js: 12.5.1
+  dotenv: 8.2.0
+  source-map-support: 0.5.19
   typescript: 4.2.3
 lockfileVersion: 5.2
 packages:
@@ -20,9 +22,15 @@ packages:
     resolution:
       integrity: sha512-ZfFsbgEXW71Rw/6EtBdrP5VxBJy4dthyC0tpQKGKmYFImlmmrykO14Za+BiIVduwjte0jXEBlhSKf0MWbFp9Eg==
   /@types/node/14.14.33:
-    dev: true
+    dev: false
     resolution:
       integrity: sha512-oJqcTrgPUF29oUP8AsUqbXGJNuPutsetaa9kTQAQce5Lx5dTYWV02ScBiT/k1BX/Z7pKeqedmvp39Wu4zR7N7g==
+  /@types/ws/7.4.0:
+    dependencies:
+      '@types/node': 14.14.33
+    dev: false
+    resolution:
+      integrity: sha512-Y29uQ3Uy+58bZrFLhX36hcI3Np37nqWE7ky5tjiDoy1GDZnIwVxS0CgF+s+1bXMzjKBFy+fqaRfb708iNzdinw==
   /abort-controller/3.0.0:
     dependencies:
       event-target-shim: 5.0.1
@@ -35,6 +43,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-x57Zf380y48robyXkLzDZkdLS3k=
+  /buffer-from/1.1.1:
+    dev: false
+    resolution:
+      integrity: sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A==
   /combined-stream/1.0.8:
     dependencies:
       delayed-stream: 1.0.0
@@ -64,6 +76,12 @@ packages:
       node: '>=12.0.0'
     resolution:
       integrity: sha512-VwZkVaUAIOB9mKdca0I5MefPMTQJTNg0qdgi1huF3iwsFwJ0L5s/Y69AQe+iPmjuV6j9rtKoG0Ta0n9vgEIL6w==
+  /dotenv/8.2.0:
+    dev: false
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
   /event-target-shim/5.0.1:
     dev: false
     engines:
@@ -112,12 +130,25 @@ packages:
     dev: false
     resolution:
       integrity: sha1-KQy7Iy4waULX1+qbg3Mqt4VvgoU=
+  /source-map-support/0.5.19:
+    dependencies:
+      buffer-from: 1.1.1
+      source-map: 0.6.1
+    dev: false
+    resolution:
+      integrity: sha512-Wonm7zOCIJzBGQdB+thsPar0kYuCIzYvxZwlBa87yi/Mdjv7Tip2cyVbLj5o0cFPN4EVkuTwb3GDDyUx2DGnGw==
+  /source-map/0.6.1:
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
   /tweetnacl/1.0.3:
     dev: false
     resolution:
       integrity: sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==
   /typescript/4.2.3:
-    dev: true
+    dev: false
     engines:
       node: '>=4.2.0'
     hasBin: true
@@ -138,6 +169,9 @@ packages:
     resolution:
       integrity: sha512-Qm8k8ojNQIMx7S+Zp8u/uHOx7Qazv3Yv4q68MiWWWOJhiwG5W3x7iqmRtJo8xxrciZUY4vRxUTJCKuRnF28ZZw==
 specifiers:
-  '@types/node': ^14.14.33
-  discord.js: ^12.5.1
-  typescript: ^4.2.3
+  '@types/node': ~14.14.33
+  '@types/ws': ^7.4.0
+  discord.js: ~12.5.1
+  dotenv: ~8.2.0
+  source-map-support: ^0.5.19
+  typescript: ~4.2.3
