@@ -11,5 +11,5 @@ import { config } from "dotenv";
    });
 })().catch(e => {
    console.error(e);
-   process.exitCode = 1;
+   process.exitCode = 64;
 });
