@@ -1,3 +1,23 @@
 #!/usr/bin/env fish
 
-git pull && pnpm i && pnpm run build && pnpm start
+function die
+   exit 483
+end
+
+echo git pulling...
+git pull || die
+
+echo
+echo removing node_modules...
+rm -rf node_modules || die
+
+echo installing dependencies...
+pnpm i -P || die
+
+echo
+echo building...
+pnpm run build || die
+
+echo
+echo starting...
+pnpm start || die
