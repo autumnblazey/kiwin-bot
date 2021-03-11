@@ -17,6 +17,13 @@ import { createdbclient } from "./mango";
       commands: [{
          name: "boop",
          exec: (msg) => msg.mentions.users.forEach(u => msg.channel.send(`*boops* <@${u.id}>`))
+      }],
+      commandishes: [{
+         exec: msg => {
+            if (!msg.content.startsWith("boop")) return;
+            msg.mentions.users.forEach(u => msg.channel.send(`*boops* <@${u.id}>`));
+            if (msg.mentions.users.size > 0 && msg.deletable) msg.delete();
+         }
       }]
    });
 })().catch(e => {
