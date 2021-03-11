@@ -10,6 +10,7 @@ export type Command = {
 export type CmdHandlerOpts = {
    bot: Bot;
    commands: ReadonlyArray<Command>;
+   prefix?(msg: Message): string | Promise<string>;
 };
 
 function chopprefix(prefix: string, messagecontent: string): string | false {
@@ -65,8 +66,8 @@ export function createcmdhandler(opts: CmdHandlerOpts) {
       return false;
    }
 
-   return function(msg: Message) {
-      const noprefix = chopprefix("!", msg.content);
+   return async function(msg: Message) {
+      const noprefix = chopprefix(await Promise.resolve(opts.prefix ? opts.prefix(msg) : "!"), msg.content);
       if (noprefix === false) return;
       processsubcmd(opts.commands, noprefix, msg);
    }

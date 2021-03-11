@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-export function dbclient() {
+export function createdbclient() {
    const prisma = new PrismaClient();
 
    return {

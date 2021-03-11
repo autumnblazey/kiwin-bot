@@ -1,10 +1,11 @@
-import { Client } from "discord.js";
+import { Client, Message } from "discord.js";
 import { Command, createcmdhandler } from "./command";
 
 type BotOpts = Readonly<{
    token: string;
    stopevents: ReadonlyArray<string>;
    commands?: ReadonlyArray<Command>;
+   prefix?(msg: Message): string | Promise<string>;
 }>;
 
 export type Bot = Readonly<{
@@ -22,7 +23,7 @@ export async function createbot(opts: BotOpts): Promise<Bot> {
       },
       stop: () => up && (void djsbot.destroy() ?? (up = false))
    }
-   if (opts.commands) djsbot.on("message", createcmdhandler({ bot, commands: opts.commands }))
+   if (opts.commands) djsbot.on("message", createcmdhandler({ bot, commands: opts.commands, prefix: opts.prefix }))
 
    await djsbot.login(opts.token);
    opts.stopevents.forEach(e => process.on(e, () => bot.stop()));
