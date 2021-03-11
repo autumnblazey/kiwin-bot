@@ -4,10 +4,9 @@ dependencies:
   '@types/ws': 7.4.0
   discord.js: 12.5.1
   dotenv: 8.2.0
+  prisma: 2.18.0
   source-map-support: 0.5.19
   typescript: 4.2.3
-devDependencies:
-  prisma: 2.18.0
 lockfileVersion: 5.2
 packages:
   /@discordjs/collection/0.1.6:
@@ -44,7 +43,7 @@ packages:
     resolution:
       integrity: sha512-+Eljsb1XItfq9B6vRTA1Oe4CQOGAxbsjtPAIORZwaU4Gt9RybnXapFlrQ8Mac89PXeSgcO4RnPSLEYhcd3kSVg==
   /@prisma/engines/2.18.0-34.da6fafb57b24e0b61ca20960c64e2d41f9e8cff1:
-    dev: true
+    dev: false
     requiresBuild: true
     resolution:
       integrity: sha512-Q5q5mQePRFSSGbd/14Ogq1RNkebbbwskiTbWsvrSq14t9Us0rC9Xsecd4mr4rEAy8Yd6sXEJW4czZ/88DGzz2w==
@@ -156,7 +155,7 @@ packages:
   /prisma/2.18.0:
     dependencies:
       '@prisma/engines': 2.18.0-34.da6fafb57b24e0b61ca20960c64e2d41f9e8cff1
-    dev: true
+    dev: false
     engines:
       node: '>=10.4'
     hasBin: true

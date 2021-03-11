@@ -1,6 +1,6 @@
 datasource db {
   provider = "sqlite"
-  url      = "file:./kiwindb"
+  url      = "file:./THE-DATABASE--GASP/kiwindb"
 }
 
 generator client {

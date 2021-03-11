@@ -19,5 +19,13 @@ echo building...
 pnpm run build || die
 
 echo
+echo pushing schema to db...
+pnpx prisma db push --preview-feature
+
+echo
+echo migrating database...
+pnpx prisma migrate deploy --preview-feature || die
+
+echo
 echo starting...
 pnpm start || die
