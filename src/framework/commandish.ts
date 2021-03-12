@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { Bot } from ".";
+import { Bot } from "./bot";
 
 export type Commandish = {
    // test: (msg: Message) => boolean | Promise<boolean>;
