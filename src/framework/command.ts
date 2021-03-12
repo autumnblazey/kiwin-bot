@@ -27,13 +27,27 @@ function getnextarg(messagecontent: string): [string, string] {
    ];
 }
 
-// function findcmd(cmds: ReadonlyArray<Command>, )
+type internalcmdstorage = {
+   [key: string]: undefined | {
+      name: typeof key,
+      exec: (msg: Message, arg: string) => unknown;
+      subcmds?: internalcmdstorage
+   }
+}
+
+function makeinternal(cmds: ReadonlyArray<Command>): internalcmdstorage {
+   const storobj: internalcmdstorage = {};
+   cmds.forEach(cmd => {
+      storobj[cmd.name] = {
+         name: cmd.name,
+         exec: cmd.exec,
+         subcmds: cmd.subcommands && makeinternal(cmd.subcommands)
+      }
+   });
+   return storobj;
+}
 
 export function createcmdhandler(opts: CmdHandlerOpts) {
-   // recursive search until finds one
-   // call a fn with the array
-   // find the cmd
-
    // if found, {
    //    continue recursively
    //    if recursive function returned false indicating failure {
@@ -45,30 +59,33 @@ export function createcmdhandler(opts: CmdHandlerOpts) {
    //    return false
    // }
 
-   function processsubcmd(cmds: ReadonlyArray<Command>, msgcontent: string, msg: Message): boolean {
+   const cmdsinternal: internalcmdstorage = makeinternal(opts.commands);
+
+   function processsubcmd(cmds: internalcmdstorage, msgcontent: string, msg: Message): boolean {
       const arg = getnextarg(msgcontent);
-      const nextcmdlower = arg[0].toLowerCase()
-      const cmdtorun = cmds.find(c => c.name === nextcmdlower);
+      const nextcmdlower = arg[0].toLowerCase();
+      const cmdtorun = cmds[nextcmdlower];
 
       if (cmdtorun) {
-         if (!cmdtorun.subcommands) {
+         if (!cmdtorun.subcmds) {
             cmdtorun.exec(msg, arg[1]);
             return true;
          }
 
-         const continuerecurse = processsubcmd(cmdtorun.subcommands, arg[1], msg);
-         if (!continuerecurse) {
+         const continu = processsubcmd(cmdtorun.subcmds, arg[1], msg);
+         if (!continu) {
             cmdtorun.exec(msg, arg[1]);
          }
 
          return true;
       }
+
       return false;
    }
 
    return async function(msg: Message) {
       const noprefix = chopprefix(await Promise.resolve(opts.prefix ? opts.prefix(msg) : "!"), msg.content);
       if (noprefix === false) return;
-      processsubcmd(opts.commands, noprefix, msg);
+      processsubcmd(cmdsinternal, noprefix, msg);
    }
 }
