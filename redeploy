@@ -11,6 +11,7 @@ git pull || die
 # echo removing node_modules...
 # rm -rf node_modules || die
 
+echo
 echo installing dependencies...
 pnpm i -P || die
 
