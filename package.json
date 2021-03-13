@@ -4,6 +4,7 @@
    "author": "Alexander Liu (autumnblazey)",
    "license": "AGPL-3.0-only",
    "main": "build/index.js",
+   "private": true,
    "scripts": {
       "clean": "rm -rf build",
       "build": "rm -rf build && tsc",
