@@ -1,7 +1,7 @@
 import { Client, Message } from "discord.js";
 import { Command, createcmdhandler } from "./command";
 import { Commandish, createcmdishhandler } from "./commandish";
-import { ReactionRole, createreactionrolehandler } from "./reactionrole";
+import { ReactionRole, createreactionrolehandlers } from "./reactionrole";
 
 type BotOpts = Readonly<{
    token: string;
@@ -37,10 +37,14 @@ export async function createbot(opts: BotOpts): Promise<Bot> {
       bot,
       commandishes: opts.commandishes
    }));
-   if (opts.reactionrole) djsbot.on("messageReactionAdd", await createreactionrolehandler({
-      bot,
-      roles: opts.reactionrole
-   }));
+   if (opts.reactionrole) {
+      const h = await createreactionrolehandlers({
+         bot,
+         roles: opts.reactionrole
+      });
+      djsbot.on("messageReactionAdd", h.add);
+      djsbot.on("messageReactionRemove", h.remove);
+   }
 
    await djsbot.login(opts.token);
    opts.stopevents.forEach(e => process.on(e, () => bot.stop()));

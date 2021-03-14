@@ -38,23 +38,25 @@ function rolekey(opts: {
    return `${opts.channelid} ${opts.messageid} ${opts.emoji}`;
 }
 
-export async function createreactionrolehandler(opts: ReactionRoleOpts) {
+export async function createreactionrolehandlers(opts: ReactionRoleOpts) {
    opts.bot.client.once("ready", async () => {
       for (const r of opts.roles) {
          const channel = await opts.bot.client.channels.fetch(r.channelid);
          // if (!(channel instanceof TextChannel))
-         channel.isText() && channel.messages.fetch(r.messageid)
+         channel.isText() && channel.messages.fetch(r.messageid);
       }
    });
 
    const internalstore = makeinternal(opts.roles);
 
-   return async function(reaction: MessageReaction, user: User | PartialUser) {
-      if (reaction.partial) reaction = await reaction.fetch();
-      // if (user.partial) user = await user.fetch();
+   async function preparerole(opts: {
+      reaction: MessageReaction;
+      user: User | PartialUser;
+   }) {
+      const reaction = opts.reaction.partial ? await opts.reaction.fetch() : opts.reaction;
 
-      const guildmember = await reaction.message.guild?.members.fetch(user.id);
-      if (!guildmember) return;
+      const guildmember = await reaction.message.guild?.members.fetch(opts.user.id);
+      if (!guildmember) return false;
 
       const emoji = reaction.emoji.id !== null ? reaction.emoji.id : reaction.emoji.toString();
       const roletogive = internalstore[rolekey({
@@ -62,11 +64,30 @@ export async function createreactionrolehandler(opts: ReactionRoleOpts) {
          messageid: reaction.message.id,
          emoji
       })];
-      if (!roletogive) return;
+      if (!roletogive) return false;
 
-      const role = await guildmember.guild.roles.fetch(roletogive.roleid)
-      if (role === null) return;
-      if (guildmember.roles.cache.has(role.id)) return void console.log("hashrolwef");
-      guildmember.roles.add(role);
+      const role = await guildmember.guild.roles.fetch(roletogive.roleid);
+      if (role === null) return false;
+
+      return { guildmember, role };
    }
+
+   return {
+      add: async function(reaction: MessageReaction, user: User | PartialUser) {
+         const stuff = await preparerole({ reaction, user });
+         if (!stuff) return;
+
+         const { guildmember, role } = stuff;
+         if (guildmember.roles.cache.has(role.id)) return void console.log("alreaedy has");
+         guildmember.roles.add(role);
+      },
+      remove: async function(reaction: MessageReaction, user: User | PartialUser) {
+         const stuff = await preparerole({ reaction, user });
+         if (!stuff) return;
+
+         const { guildmember, role } = stuff;
+         if (!guildmember.roles.cache.has(role.id)) return void console.log("no has");
+         guildmember.roles.remove(role);
+      }
+   };
 }
