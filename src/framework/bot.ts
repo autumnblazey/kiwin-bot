@@ -10,33 +10,54 @@ type BotOpts = Readonly<{
    commandishes?: ReadonlyArray<Commandish>;
    reactionrole?: ReadonlyArray<ReactionRole>;
    prefix?(msg: Message): string | Promise<string>;
+   repliers?: boolean;
 }>;
 
-export type Bot = Readonly<{
+export type Bot<R extends boolean = false> = Readonly<{
    readonly client: Client;
    stop(): void;
-}>;
+} & (R extends true ? {
+   registerreplier: (msg: Message) => unknown;
+   registeruserreplier: (msg: Message) => unknown;
+} : {})>;
 
-export async function createbot(opts: BotOpts): Promise<Bot> {
+// registerreplier: R extends true ? (msg: Message) => unknown : undefined;
+// registeruserreplier: R extends true ? (msg: Message) => unknown : undefined;
+
+export async function createbot(opts: BotOpts): Promise<Bot<typeof opts.repliers extends boolean ? typeof opts.repliers : false>> {
    const djsbot = new Client();
 
    let up = true;
-   const bot: Bot = {
+   const bot: Bot<false> = {
       get client() {
          return djsbot;
       },
       stop: () => up && (void djsbot.destroy() ?? (up = false))
    }
 
-   if (opts.commands) djsbot.on("message", createcmdhandler({
+   // if (opts.commands) djsbot.on("message", );
+   // if (opts.commandishes) djsbot.on("message", );
+
+   const handlers: Array<(msg: Message) => unknown> = [];
+   if (opts.commandishes) handlers.push(createcmdishhandler({
+      bot,
+      commandishes: opts.commandishes
+   }));
+   if (opts.commands) handlers.push(createcmdhandler({
       bot,
       commands: opts.commands,
       prefix: opts.prefix
    }));
-   if (opts.commandishes) djsbot.on("message", createcmdishhandler({
-      bot,
-      commandishes: opts.commandishes
-   }));
+   if (opts.repliers) {
+      const repliers_channel: {
+         [k: string]: Generator<void, void, Message>
+      } = {};
+      const repliers_user: {
+         [k: string]: Generator<void, void, Message>
+      } = {};
+
+   } else djsbot.on("message", msg => handlers.forEach(h => h(msg)));
+
    if (opts.reactionrole) {
       const h = await createreactionrolehandlers({
          bot,
@@ -51,3 +72,17 @@ export async function createbot(opts: BotOpts): Promise<Bot> {
 
    return bot;
 }
+/*
+   createcmdhandler({
+      bot,
+      commands: opts.commands,
+      prefix: opts.prefix
+   })
+   createcmdishhandler({
+      bot,
+      commandishes: opts.commandishes
+   })
+
+Array<() => Generator<void, void, Message>>
+*/
+const h = ""

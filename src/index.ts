@@ -1,14 +1,19 @@
 import { createbot } from "./framework";
-import { getenv } from "./rando";
 import { config } from "dotenv";
 import { createdbclient } from "./mango";
+
+function getenv(env: string) {
+   const envthing = process.env[env];
+   if (envthing) return envthing;
+   throw `process.env["${env}"] no exist`;
+}
 
 (async () => {
    config();
 
    const db = createdbclient()
 
-   createbot({
+   await createbot({
       stopevents: ["exit", "SIGINT", "SIGTERM"],
       token: getenv("TOKEN"),
       prefix(msg) {
@@ -24,6 +29,12 @@ import { createdbclient } from "./mango";
             msg.mentions.users.forEach(u => msg.channel.send(`*boops* <@${u.id}>`));
             if (msg.mentions.users.size > 0 && msg.deletable) msg.delete();
          }
+      }],
+      reactionrole: [{
+         channelid: "578740813912211457",
+         emoji: "798032814275952660",
+         messageid: "818024504881840218",
+         roleid: "820435142325174302"
       }]
    });
 })().catch(e => {

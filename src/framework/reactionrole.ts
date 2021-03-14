@@ -1,5 +1,5 @@
 import { Bot } from "./bot";
-import { User, PartialUser, Client, MessageReaction, TextChannel } from "discord.js";
+import { User, PartialUser, MessageReaction } from "discord.js";
 
 export type ReactionRole = {
    /** probably not needed, i think can fetch it from the channel */
