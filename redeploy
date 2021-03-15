@@ -7,13 +7,17 @@ end
 echo git pulling...
 git pull || die
 
-echo
-echo removing node_modules...
-rm -rf node_modules || die
+# echo
+# echo removing node_modules...
+# rm -rf node_modules || die
 
 echo
 echo installing dependencies...
 pnpm i -P || die
+
+echo
+echo generating prisma client...
+pnpx prisma generate
 
 echo
 echo building...
