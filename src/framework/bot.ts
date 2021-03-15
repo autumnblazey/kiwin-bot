@@ -126,11 +126,13 @@ export async function createbot(opts: BotOpts): Promise<Bot> {
 
       bot.registerreplier = function(msg, gen) {
          store.putreplier(msg, gen);
+         gen.next();
          gen.next(msg);
       }
 
       bot.registeruserreplier = function(msg, gen) {
          store.putuserreplier(msg, gen);
+         gen.next();
          gen.next(msg);
       }
    }
