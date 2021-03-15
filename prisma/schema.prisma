@@ -7,14 +7,29 @@ generator client {
   provider = "prisma-client-js"
 }
 
+/// represents a guild on discord
 model Server {
+  /// same as discord guild id
   id      String @id
+
+  /// prefix to use
   prefix  String @default("!")
+
+  /// members of the guild
   members GuildMember[]
 }
 
+/// represents a guild member on discord
 model GuildMember {
+  /// id, but also since the same person can be on multiple guilds at one time,
+  /// the format is `${server.id} ${user.id}`
+  /// so like the server id, followed by a space, followed by the user's id
+  /// im not really pressed for storage space and stuff
   id       String @id
+
+  /// the server that this member is a part of
   server   Server @relation(fields: [serverid], references: [id])
+
+  /// server id
   serverid String
 }
