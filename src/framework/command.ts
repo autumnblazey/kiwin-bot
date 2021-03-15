@@ -1,8 +1,9 @@
-import { Message } from "discord.js";
+import { Message, MessageEmbed } from "discord.js";
 import { Bot } from "./bot";
 
 export type Command = {
    name: string;
+   description?: string;
    exec(this: Bot, msg: Message, arg: string): unknown;
    subcommands?: Array<Command>
 };
@@ -10,7 +11,7 @@ export type Command = {
 export type CmdHandlerOpts = {
    bot: Bot;
    commands: ReadonlyArray<Command>;
-   prefix?(msg: Message): string | Promise<string>;
+   prefix(msg: Message): string | Promise<string>;
 };
 
 function chopprefix(prefix: string, messagecontent: string): string | false {
@@ -84,8 +85,50 @@ export function createcmdhandler(opts: CmdHandlerOpts) {
    }
 
    return async function(msg: Message) {
-      const noprefix = chopprefix(await Promise.resolve(opts.prefix ? opts.prefix(msg) : "!"), msg.content);
+      const noprefix = chopprefix(await Promise.resolve(opts.prefix(msg)), msg.content);
       if (noprefix === false) return;
       processsubcmd(cmdsinternal, noprefix, msg);
+   }
+}
+
+function cmdhelpembed(cmd: Command) {
+   return function(msg: Message) {
+      const embed = new MessageEmbed();
+      embed.setTitle(`Command ${cmd.name}`);
+      msg.channel.send(embed);
+   }
+}
+
+export function generatehelp(_cmds: ReadonlyArray<Command>): Command {
+   // shallow clone so that i can sort it
+   const cmds = [..._cmds].sort((a, b) => a.name.localeCompare(b.name));
+   const subcommands: Array<Command> = [];
+
+   cmds.forEach(c => {
+      subcommands.push({
+         name: c.name,
+         exec: cmdhelpembed(c)
+      })
+   })
+
+   return {
+      name: "help",
+      async exec(msg, arg) {
+         const embed = new MessageEmbed();
+
+         if (arg !== "") {
+            embed.setTitle(`Command \`${arg}\` not found!`);
+            return msg.channel.send(embed);
+         }
+
+         embed.setTitle("Command help");
+         embed.setDescription(`run \`${await this.prefix(msg)}help <command>\` (replace \`<command>\` with the name of the command) for more help on a command`);
+         cmds.forEach(c => {
+            embed.addField(c.name, c.description ?? "no description available", true);
+         });
+
+         await msg.channel.send(embed);
+      },
+      subcommands
    }
 }

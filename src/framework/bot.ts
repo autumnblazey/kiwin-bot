@@ -19,6 +19,7 @@ type BotButNotReadonly = {
    registerreplier(msg: Message, gen: Generator<void, void, Message>): unknown;
    /** replier that is triggered for a specific user in a specific channel */
    registeruserreplier(msg: Message, gen: Generator<void, void, Message>): unknown;
+   prefix(msg: Message): Promise<string>;
 };
 export type Bot = Readonly<BotButNotReadonly>;
 
@@ -71,6 +72,7 @@ function makereplierstore() {
 }
 
 export async function createbot(opts: BotOpts): Promise<Bot> {
+   const prefix = opts.prefix ?? (() => "!")
    const djsbot = new Client();
 
    let up = true;
@@ -79,6 +81,9 @@ export async function createbot(opts: BotOpts): Promise<Bot> {
          return djsbot;
       },
       stop: () => up && (void djsbot.destroy() ?? (up = false)),
+      prefix(msg) {
+         return Promise.resolve(prefix(msg));
+      },
       registerreplier() {},
       registeruserreplier() {}
    }
@@ -99,7 +104,7 @@ export async function createbot(opts: BotOpts): Promise<Bot> {
       if (opts.commands) handlers.push(createcmdhandler({
          bot,
          commands: opts.commands,
-         prefix: opts.prefix
+         prefix
       }));
       if (opts.commandishes) handlers.push(createcmdishhandler({
          bot,
