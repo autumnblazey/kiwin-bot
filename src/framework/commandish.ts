@@ -3,7 +3,7 @@ import { Bot } from "./bot";
 
 export type Commandish = {
    // test: (msg: Message) => boolean | Promise<boolean>;
-   exec: (msg: Message) => unknown;
+   exec(this: Bot, msg: Message): unknown;
 };
 
 export type CommandishHandlerOpts = {
@@ -13,6 +13,6 @@ export type CommandishHandlerOpts = {
 
 export function createcmdishhandler(opts: CommandishHandlerOpts) {
    return async function(msg: Message) {
-      opts.commandishes.forEach(c => c.exec(msg));
+      opts.commandishes.forEach(c => c.exec.bind(opts.bot)(msg));
    }
 }

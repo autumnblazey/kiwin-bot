@@ -3,7 +3,7 @@ import { Message } from "discord.js";
 
 export type Command = {
    name: string;
-   exec: (msg: Message, arg: string) => unknown;
+   exec(this: Bot, msg: Message, arg: string): unknown;
    subcommands?: Array<Command>
 };
 
@@ -68,13 +68,13 @@ export function createcmdhandler(opts: CmdHandlerOpts) {
 
       if (cmdtorun) {
          if (!cmdtorun.subcmds) {
-            cmdtorun.exec(msg, arg[1]);
+            cmdtorun.exec.bind(opts.bot)(msg, arg[1]);
             return true;
          }
 
          const continu = processsubcmd(cmdtorun.subcmds, arg[1], msg);
          if (!continu) {
-            cmdtorun.exec(msg, arg[1]);
+            cmdtorun.exec.bind(opts.bot)(msg, arg[1]);
          }
 
          return true;
