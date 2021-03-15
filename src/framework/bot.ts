@@ -12,15 +12,15 @@ type BotOpts = Readonly<{
    prefix?(msg: Message): string | Promise<string>;
 }>;
 
-type tempbot = {
-   readonly client: Client;
+type BotButNotReadonly = {
+   client: Client;
    stop(): void;
    /** replier that is triggered for anyone in that channel */
    registerreplier(msg: Message, gen: Generator<void, void, Message>): unknown;
    /** replier that is triggered for a specific user in a specific channel */
    registeruserreplier(msg: Message, gen: Generator<void, void, Message>): unknown;
 };
-export type Bot = Readonly<tempbot>;
+export type Bot = Readonly<BotButNotReadonly>;
 
 function makereplierstore() {
    const repliers: {
@@ -74,7 +74,7 @@ export async function createbot(opts: BotOpts): Promise<Bot> {
    const djsbot = new Client();
 
    let up = true;
-   const bot: tempbot = {
+   const bot: BotButNotReadonly = {
       get client() {
          return djsbot;
       },
