@@ -15,7 +15,7 @@ export type CmdHandlerOpts = {
 
 function chopprefix(prefix: string, messagecontent: string): string | false {
    return messagecontent.toLowerCase().startsWith(prefix.toLowerCase())
-      ? messagecontent.substring(prefix.length)
+      ? messagecontent.substring(prefix.length).trimStart()
       : false;
 }
 
