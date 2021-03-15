@@ -1,5 +1,5 @@
-import { Bot } from "./bot";
 import { Message } from "discord.js";
+import { Bot } from "./bot";
 
 export type Command = {
    name: string;

@@ -1,5 +1,5 @@
-import { Commandish } from "./framework";
 import { Message } from "discord.js";
+import { Commandish } from "./framework";
 
 function* h(): Generator<void, void, Message> {
    let msg = yield;

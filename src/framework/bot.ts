@@ -1,7 +1,7 @@
 import { Client, Message } from "discord.js";
 import { Command, createcmdhandler } from "./command";
 import { Commandish, createcmdishhandler } from "./commandish";
-import { ReactionRole, createreactionrolehandlers } from "./reactionrole";
+import { createreactionrolehandlers, ReactionRole } from "./reactionrole";
 
 type BotOpts = Readonly<{
    token: string;

@@ -1,4 +1,4 @@
-export { createbot, Bot } from "./bot";
-export { createcmdhandler, CmdHandlerOpts, Command } from "./command";
-export { createcmdishhandler, Commandish, CommandishHandlerOpts } from "./commandish";
+export { Bot, createbot } from "./bot";
+export { CmdHandlerOpts, Command, createcmdhandler } from "./command";
+export { Commandish, CommandishHandlerOpts, createcmdishhandler } from "./commandish";
 export { createreactionrolehandlers, ReactionRole, ReactionRoleOpts } from "./reactionrole";

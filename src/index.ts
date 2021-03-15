@@ -1,10 +1,15 @@
-import { createbot } from "./framework";
-import { getenv } from "./rando";
 import { config } from "dotenv";
-import { createdbclient } from "./mango";
 import { backup as backupdb } from "./backups";
-import { commands } from "./commands";
 import { commandishes } from "./commandishes";
+import { commands } from "./commands";
+import { createbot } from "./framework";
+import { createdbclient } from "./mango";
+
+function getenv(env: string) {
+   const envthing = process.env[env];
+   if (envthing) return envthing;
+   throw `process.env["${env}"] no exist`;
+}
 
 (async () => {
    config();
