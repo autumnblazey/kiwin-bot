@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 
 export function createdbclient() {
    const prisma = new PrismaClient();
-
    return {
       async getprefix(id: string): Promise<string> {
          const found = await prisma.server.findUnique({
@@ -18,7 +17,12 @@ export function createdbclient() {
          });
 
          return created.prefix;
+      },
+      async setprefix(id: string, prefix: string): Promise<void> {
+         await prisma.server.update({
+            where: { id },
+            data: { prefix }
+         });
       }
-      // async setprefix(id: string, prefix: string): Promise<void> {}
    };
 }

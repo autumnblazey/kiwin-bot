@@ -27,7 +27,7 @@ function getenv(env: string) {
       prefix(msg) {
          return msg.guild?.id ? db.getprefix(msg.guild.id) : "";
       },
-      commands, commandishes
+      commands: commands(db), commandishes
    });
 })().catch(e => {
    console.error(e);
