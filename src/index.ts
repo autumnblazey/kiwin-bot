@@ -3,14 +3,8 @@ import { getenv } from "./rando";
 import { config } from "dotenv";
 import { createdbclient } from "./mango";
 import { backup as backupdb } from "./backups";
-import { Message } from "discord.js";
-
-function* h(): Generator<void, void, Message> {
-   let msg = yield;
-   while (msg.content === "h") {
-      msg = yield void msg.channel.send("h");
-   }
-}
+import { commands } from "./commands";
+import { commandishes } from "./commandishes";
 
 (async () => {
    config();
@@ -28,21 +22,7 @@ function* h(): Generator<void, void, Message> {
       prefix(msg) {
          return msg.guild?.id ? db.getprefix(msg.guild.id) : "";
       },
-      commands: [{
-         name: "boop",
-         exec: (msg) => msg.mentions.users.forEach(u => msg.channel.send(`*boops* <@${u.id}>`))
-      }],
-      commandishes: [{
-         exec(msg) {
-            if (!msg.content.startsWith("boop")) return;
-            msg.mentions.users.forEach(u => msg.channel.send(`*boops* <@${u.id}>`));
-            if (msg.mentions.users.size > 0 && msg.deletable) msg.delete();
-         }
-      }, {
-         exec(msg) {
-            msg.content === "h" && this.registerreplier(msg, h());
-         }
-      }]
+      commands, commandishes
    });
 })().catch(e => {
    console.error(e);
