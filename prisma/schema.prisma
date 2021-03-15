@@ -8,6 +8,13 @@ generator client {
 }
 
 model Server {
-  id     String @id
-  prefix String @default("!")
+  id      String @id
+  prefix  String @default("!")
+  members GuildMember[]
+}
+
+model GuildMember {
+  id       String @id
+  server   Server @relation(fields: [serverid], references: [id])
+  serverid String
 }
