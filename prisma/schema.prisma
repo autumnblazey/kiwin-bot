@@ -15,6 +15,9 @@ model Server {
   /// prefix to use
   prefix  String @default("!")
 
+  /// h high streak
+  h Int @default(0)
+
   /// members of the guild
   members GuildMember[]
 }
@@ -32,4 +35,7 @@ model GuildMember {
 
   /// server id
   serverid String
+
+  /// h timeout
+  htimeout String
 }
