@@ -12,19 +12,19 @@
       "start": "NODE_ENV=production node -r source-map-support/register build"
    },
    "dependencies": {
-      "@prisma/client": "^2.18.0",
-      "@types/node": "~14.14.33",
-      "@types/ws": "^7.4.0",
-      "bufferutil": "^4.0.3",
-      "discord.js": "~12.5.1",
+      "@prisma/client": "~2.20.1",
+      "@types/node": "~14.14.37",
+      "@types/ws": "~7.4.1",
+      "bufferutil": "~4.0.3",
+      "discord.js": "~12.5.3",
       "dotenv": "~8.2.0",
-      "emoji-regex": "^9.2.2",
-      "erlpack": "^0.1.3",
-      "prisma": "^2.18.0",
-      "source-map-support": "^0.5.19",
-      "typescript": "~4.2.3",
-      "utf-8-validate": "^5.0.4",
-      "zlib-sync": "^0.1.7"
+      "emoji-regex": "~9.2.2",
+      "erlpack": "~0.1.3",
+      "prisma": "~2.20.1",
+      "source-map-support": "~0.5.19",
+      "typescript": "~4.2.4",
+      "utf-8-validate": "~5.0.4",
+      "zlib-sync": "~0.1.7"
    },
    "devDependencies": {
       "ts-prune": "^0.8.8"
